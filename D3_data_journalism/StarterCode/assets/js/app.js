@@ -1,3 +1,4 @@
+//Initializing the svg variables
 var svgWidth = 960;
 var svgHeight = 500;
 
@@ -217,7 +218,7 @@ d3.csv("./assets/data/data.csv").then(function(Data, err) {
           agemedianLabel
             .classed("active", false)
             .classed("inactive", true);
-            inpovertyLabel
+          inpovertyLabel
             .classed("active", true)
             .classed("inactive", false);
         }
