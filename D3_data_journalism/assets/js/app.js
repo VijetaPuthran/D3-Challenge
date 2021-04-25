@@ -95,22 +95,34 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 }
 
 // Retrieve data from the CSV file and execute everything below
-d3.csv("data/data.csv").then(function(Data, err) {
+d3.csv("/data/data.csv").then(function(Data, err) {
   if (err) throw err;
 
   // parse data
     Data.forEach(function(data) {
-    data.hair_length = +data.hair_length;
-    data.num_hits = +data.num_hits;
-    data.num_albums = +data.num_albums;
+    data.poverty = +data.poverty;
+    data.povertyMoe = +data.povertyMoe;
+    data.age = +data.age;
+    data.ageMoe = +data.ageMoe;
+    data.income = +data.income;
+    data.incomeMoe = +data.incomeMoe;
+    data.healthcare = +data.healthcare;
+    data.healthcareLow = +data.healthcareLow;
+    data.healthcareHigh = +data.healthcareHigh;
+    data.obesity = +data.obesity;
+    data.obesityLow = +data.obesityLow;
+    data.obesityHigh = +data.obesityHigh;
+    data.smokes = +data.smokes;
+    data.smokesLow = +data.smokesLow;
+    data.smokesHigh = +data.smokesHigh;
   });
 
   // xLinearScale function above csv import
-  var xLinearScale = xScale(hairData, chosenXAxis);
+  var xLinearScale = xScale(Data, chosenXAxis);
 
   // Create y scale function
   var yLinearScale = d3.scaleLinear()
-    .domain([0, d3.max(hairData, d => d.num_hits)])
+    .domain([0, d3.max(Data, d => d.healthcareLow)])
     .range([height, 0]);
 
   // Create initial axis functions
@@ -129,32 +141,32 @@ d3.csv("data/data.csv").then(function(Data, err) {
 
   // append initial circles
   var circlesGroup = chartGroup.selectAll("circle")
-    .data(hairData)
+    .data(Data)
     .enter()
     .append("circle")
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
-    .attr("cy", d => yLinearScale(d.num_hits))
+    .attr("cy", d => yLinearScale(d.healthcareLow))
     .attr("r", 20)
-    .attr("fill", "pink")
+    .attr("fill", "blue")
     .attr("opacity", ".5");
 
   // Create group for two x-axis labels
   var labelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
-  var hairLengthLabel = labelsGroup.append("text")
+  var inpovertyLabel = labelsGroup.append("text")
     .attr("x", 0)
     .attr("y", 20)
-    .attr("value", "hair_length") // value to grab for event listener
+    .attr("value", "in_poverty") // value to grab for event listener
     .classed("active", true)
-    .text("Hair Metal Ban Hair Length (inches)");
+    .text("In Poverty(%)");
 
-  var albumsLabel = labelsGroup.append("text")
+  var agemedianLabel = labelsGroup.append("text")
     .attr("x", 0)
     .attr("y", 40)
-    .attr("value", "num_albums") // value to grab for event listener
+    .attr("value", "age") // value to grab for event listener
     .classed("inactive", true)
-    .text("# of Albums Released");
+    .text("Age(Median)");
 
   // append y axis
   chartGroup.append("text")
@@ -163,7 +175,7 @@ d3.csv("data/data.csv").then(function(Data, err) {
     .attr("x", 0 - (height / 2))
     .attr("dy", "1em")
     .classed("axis-text", true)
-    .text("Number of Billboard 500 Hits");
+    .text("Lacks Healthcare(%)");
 
   // updateToolTip function above csv import
   var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
@@ -182,7 +194,7 @@ d3.csv("data/data.csv").then(function(Data, err) {
 
         // functions here found above csv import
         // updates x scale for new data
-        xLinearScale = xScale(hairData, chosenXAxis);
+        xLinearScale = xScale(Data, chosenXAxis);
 
         // updates x axis with transition
         xAxis = renderAxes(xLinearScale, xAxis);
@@ -194,19 +206,19 @@ d3.csv("data/data.csv").then(function(Data, err) {
         circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
 
         // changes classes to change bold text
-        if (chosenXAxis === "num_albums") {
-          albumsLabel
+        if (chosenXAxis === "age") {
+          agemedianLabel
             .classed("active", true)
             .classed("inactive", false);
-          hairLengthLabel
+          inpovertyLabel
             .classed("active", false)
             .classed("inactive", true);
         }
         else {
-          albumsLabel
+          agemedianLabel
             .classed("active", false)
             .classed("inactive", true);
-          hairLengthLabel
+            inpovertyLabel
             .classed("active", true)
             .classed("inactive", false);
         }
