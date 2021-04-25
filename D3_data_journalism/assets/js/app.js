@@ -95,10 +95,10 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 }
 
 // Retrieve data from the CSV file and execute everything below
-d3.csv("/data/data.csv").then(function(Data, err) {
+d3.csv("data.csv").then(function(Data, err) {
   if (err) throw err;
 
-  // parse data
+  // parse datas
     Data.forEach(function(data) {
     data.poverty = +data.poverty;
     data.povertyMoe = +data.povertyMoe;
