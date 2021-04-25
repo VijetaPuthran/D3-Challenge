@@ -1,4 +1,3 @@
-// 
 var svgWidth = 960;
 var svgHeight = 500;
 
@@ -71,7 +70,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
     label = "In Poverty(%):";
   }
   else {
-    label = "Age(Median)";
+    label = "Age(Median): ";
   }
 
   var toolTip = d3.tip()
@@ -95,11 +94,11 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 }
 
 // Retrieve data from the CSV file and execute everything below
-d3.csv("data.csv").then(function(Data, err) {
+d3.csv("./assets/data/data.csv").then(function(Data, err) {
   if (err) throw err;
 
-  // parse datas
-    Data.forEach(function(data) {
+  // parse data
+  Data.forEach(function(data) {
     data.poverty = +data.poverty;
     data.povertyMoe = +data.povertyMoe;
     data.age = +data.age;
