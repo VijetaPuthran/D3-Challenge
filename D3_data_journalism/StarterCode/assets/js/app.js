@@ -76,7 +76,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 
   var toolTip = d3.tip()
     .attr("class", "tooltip")
-    .offset([80, -60])
+    .offset([80, -60])    
     .html(function(d) {
       return (`${d.state}<br>${label} ${d[chosenXAxis]}`);
     });
@@ -135,36 +135,102 @@ d3.csv("./assets/data/data.csv").then(function(Data, err) {
     .attr("transform", `translate(0, ${height})`)
     .call(bottomAxis);
 
+    // svg.append("g")
+    // .classed("x-axis", true)
+    // .attr("transform", `translate(0, ${height})`)
+    // .call(bottomAxis);
+
   // append y axis
   chartGroup.append("g")
     .call(leftAxis);
 
-  // append initial circles
-  var circlesGroup = chartGroup.selectAll("circle")
+    var circlesGroup = chartGroup.selectAll("g")
     .data(Data)
     .enter()
-    .append("circle")
+    .append("g");
+
+  // append initial circles
+  // var circlesGroup = chartGroup.selectAll("circle")
+  //   .data(Data)
+  //   .enter()
+  //   .append("circle")
+  //   .attr("cx", d => xLinearScale(d[chosenXAxis]))
+  //   .attr("cy", d => yLinearScale(d.healthcareLow))
+  //   .attr("r", 20)
+  //   .attr("fill", "lightblue")
+  //   .attr("opacity", ".5");
+
+  circlesGroup.append("circle")
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d.healthcareLow))
     .attr("r", 20)
     .attr("fill", "lightblue")
     .attr("opacity", ".5");
 
+  // svg.selectAll("circle")
+  //   .data(Data)
+  //   .enter()
+  //   .append("circle")
+  //   .attr("cx", d => xLinearScale(d[chosenXAxis]))
+  //   .attr("cy", d => yLinearScale(d.healthcareLow))
+  //   .attr("r", 20)
+  //   .attr("fill", "lightblue")
+  //   .attr("opacity", ".5");
+
+    // circlesGroup.
+    //     .data(Data)
+    //     .enter()
+    //     .append("text")
+    // .text(function(d) {
+    //   return d.abbr;
+    // })
+
+
   //adding text in circles
-  svg.selectAll(".dot")
-  .data(Data)
-  .enter()
-  .append("text")
-  .text(function(data){return data.abbr;})
-  .attr("x", function(data){
-      return xLinearScale(data.poverty);
+  // svg.selectAll(".dot")
+  // .data(Data)
+  // .enter()
+  // .append("text")  
+  // .text(function(d){return d.abbr;})
+  // .attr("x", function(d){
+  //     return xLinearScale(d[chosenXAxis]);
+  // })
+  // .attr("y", function(d) {
+  //     return yLinearScale(d.healthcareLow);
+  // })
+  // .attr("font-size","8px")
+  // .attr("fill","black")
+  // .style("text-anchor","middle");
+
+  circlesGroup
+  .append("text")  
+  .text(function(d){return d.abbr;})
+  .attr("x", function(d){
+      return xLinearScale(d[chosenXAxis]);
   })
-  .attr("y", function(data) {
-      return yLinearScale(data.healthcareLow);
+  .attr("y", function(d) {
+      return yLinearScale(d.healthcareLow);
   })
   .attr("font-size","8px")
   .attr("fill","black")
   .style("text-anchor","middle");
+
+  // svg.selectAll("g")
+  // .data(Data)
+  // .enter()
+  // .append("text")
+	// 	 .attr("x", function(d){
+  //     return xLinearScale(d[chosenXAxis]);
+  // })
+  // .attr("y", function(d) {
+  //     return yLinearScale(d.healthcareLow);
+  // })
+	// 	 .attr("stroke", "black")
+	// 	 .attr("font-size", "8px")
+	// 	 .text(function(d) {
+	// 			return d.abbr;
+	// 	 });
+
 
 
   // Create group for two x-axis labels
@@ -184,6 +250,7 @@ d3.csv("./assets/data/data.csv").then(function(Data, err) {
     .attr("value", "age") // value to grab for event listener
     .classed("inactive", true)
     .text("Age(Median)");
+
 
   // append y axis
   chartGroup.append("text")
