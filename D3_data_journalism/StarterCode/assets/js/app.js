@@ -160,7 +160,7 @@ d3.csv("./assets/data/data.csv").then(function(Data, err) {
       return xLinearScale(data.poverty);
   })
   .attr("y", function(data) {
-      return yLinearScale(data.smokes);
+      return yLinearScale(data.healthcareLow);
   })
   .attr("font-size","8px")
   .attr("fill","black")
