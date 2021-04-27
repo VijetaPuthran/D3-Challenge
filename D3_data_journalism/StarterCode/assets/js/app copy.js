@@ -22,8 +22,7 @@ var svg = d3
 
 // Append an SVG group
 var chartGroup = svg.append("g")
-  .attr("transform", `translate(${margin.left}, ${margin.top})`)
-  .attr("class","main");
+  .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Initial Params
 var chosenXAxis = "poverty";
@@ -33,7 +32,7 @@ function xScale(Data, chosenXAxis) {
   // create scales
   var xLinearScale = d3.scaleLinear()
     .domain([d3.min(Data, d => d[chosenXAxis]) * 0.8,
-    d3.max(Data, d => d[chosenXAxis]) * 1.2
+      d3.max(Data, d => d[chosenXAxis]) * 1.2
     ])
     .range([0, width]);
 
@@ -54,15 +53,11 @@ function renderAxes(newXScale, xAxis) {
 
 // function used for updating circles group with a transition to
 // new circles
-function renderCircles(circlesGroup, newXScale, chosenXAxis,circlesText) {
+function renderCircles(circlesGroup, newXScale, chosenXAxis) {
 
   circlesGroup.transition()
     .duration(1000)
     .attr("cx", d => newXScale(d[chosenXAxis]));
-
-  circlesText.transition()
-    .duration(1000)
-    .attr("dx", d => newXScale(d[chosenXAxis]));
 
   return circlesGroup;
 }
@@ -81,18 +76,18 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 
   var toolTip = d3.tip()
     .attr("class", "tooltip")
-    // .offset([80, -60])
-    .html(function (d) {
-      return (`<div>${d.state}</div><div>${label} ${d[chosenXAxis]}</div>`);
+    .offset([80, -60])    
+    .html(function(d) {
+      return (`${d.state}<br>${label} ${d[chosenXAxis]}`);
     });
 
   circlesGroup.call(toolTip);
 
-  circlesGroup.on("mouseover", function (data) {
-    toolTip.show(data, this);
+  circlesGroup.on("mouseover", function(data) {
+    toolTip.show(data);
   })
     // onmouseout event
-    .on("mouseout", function (data, index) {
+    .on("mouseout", function(data, index) {
       toolTip.hide(data);
     });
 
@@ -100,10 +95,11 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 }
 
 // Retrieve data from the CSV file and execute everything below
-d3.csv("./assets/data/data.csv").then(function (Data, err) {
+d3.csv("./assets/data/data.csv").then(function(Data, err) {
   if (err) throw err;
+
   // parse data
-  Data.forEach(function (data) {
+  Data.forEach(function(data) {
     data.poverty = +data.poverty;
     data.povertyMoe = +data.povertyMoe;
     data.age = +data.age;
@@ -139,21 +135,21 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
     .attr("transform", `translate(0, ${height})`)
     .call(bottomAxis);
 
-  // svg.append("g")
-  // .classed("x-axis", true)
-  // .attr("transform", `translate(0, ${height})`)
-  // .call(bottomAxis);
+    // svg.append("g")
+    // .classed("x-axis", true)
+    // .attr("transform", `translate(0, ${height})`)
+    // .call(bottomAxis);
 
   // append y axis
   chartGroup.append("g")
     .call(leftAxis);
 
-  // var circlesGroup = chartGroup.selectAll("g")
-  //   .data(Data)
-  //   .enter()
-  //   .append("g");
+    var circlesGroup = chartGroup.selectAll("g")
+    .data(Data)
+    .enter()
+    .append("g");
+
   //append initial circles
-    
   var circlesGroup = chartGroup.selectAll("circle")
     .data(Data)
     .enter()
@@ -161,45 +157,8 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d.healthcareLow))
     .attr("r", 20)
-    .attr("fill", "blue")
+    .attr("fill", "lightblue")
     .attr("opacity", ".5");
-    //console.log(Data);
-
-    //svg.select(".main").style("color", "green");
-
-    for(var index=0;index<Data.length;index++) {
-      svg.select(".main")
-      .insert("text")
-      .text(Data[index].abbr)
-      .attr('class','stateText')
-      .attr("x", xLinearScale(Data[index][chosenXAxis]))
-      .attr("y", yLinearScale(Data[index].healthcareLow))
-    }
-
-
-  //var circlesText = chartGroup.selectAll("text")
-  // .data(Data)
-  // .enter()
-  // .append("text")
-  // .text(Data[0].abbr)
-  // .attr('class','stateText')
-  // .attr("x", d => xLinearScale(d[chosenXAxis]))
-  // .attr("y", d => yLinearScale(d.healthcareLow))
-
-   var circlesText = chartGroup.selectAll("text")
-  // .data(Data)
-  // .enter()
-  // .append("text")
-  // //.text(d=>d.abbr)
-  // //console.log(Data)
-  // .text(function(d) {
-  //     return d.abbr;      
-  //   })
-  // .attr('class','stateText')
-  // .attr("x", d => xLinearScale(d[chosenXAxis]))
-  // .attr("y", d => yLinearScale(d.healthcareLow))
-
-  
 
   // circlesGroup.append("circle")
   //   .attr("cx", d => xLinearScale(d[chosenXAxis]))
@@ -208,23 +167,23 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
   //   .attr("fill", "lightblue")
   //   .attr("opacity", ".5");
 
-  // svg.selectAll("circle")
-  //   .data(Data)
-  //   .enter()
-  //   .append("circle")
-  //   .attr("cx", d => xLinearScale(d[chosenXAxis]))
-  //   .attr("cy", d => yLinearScale(d.healthcareLow))
-  //   .attr("r", 20)
-  //   .attr("fill", "lightblue")
-  //   .attr("opacity", ".5");
+  svg.selectAll("circle")
+    .data(Data)
+    .enter()
+    .append("circle")
+    .attr("cx", d => xLinearScale(d[chosenXAxis]))
+    .attr("cy", d => yLinearScale(d.healthcareLow))
+    .attr("r", 20)
+    .attr("fill", "lightblue")
+    .attr("opacity", ".5");
 
-  // circlesGroup.
-  //     .data(Data)
-  //     .enter()
-  //     .append("text")
-  // .text(function(d) {
-  //   return d.abbr;
-  // })
+    // circlesGroup.
+    //     .data(Data)
+    //     .enter()
+    //     .append("text")
+    // .text(function(d) {
+    //   return d.abbr;
+    // })
 
 
   //adding text in circles
@@ -260,17 +219,17 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
   // .data(Data)
   // .enter()
   // .append("text")
-  // 	 .attr("x", function(d){
+	// 	 .attr("x", function(d){
   //     return xLinearScale(d[chosenXAxis]);
   // })
   // .attr("y", function(d) {
   //     return yLinearScale(d.healthcareLow);
   // })
-  // 	 .attr("stroke", "black")
-  // 	 .attr("font-size", "8px")
-  // 	 .text(function(d) {
-  // 			return d.abbr;
-  // 	 });
+	// 	 .attr("stroke", "black")
+	// 	 .attr("font-size", "8px")
+	// 	 .text(function(d) {
+	// 			return d.abbr;
+	// 	 });
 
 
 
@@ -307,7 +266,7 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
 
   // x axis labels event listener
   labelsGroup.selectAll("text")
-    .on("click", function () {
+    .on("click", function() {
       // get value of selection
       var value = d3.select(this).attr("value");
       if (value !== chosenXAxis) {
@@ -325,7 +284,7 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
         xAxis = renderAxes(xLinearScale, xAxis);
 
         // updates circles with new x values
-        circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis, circlesText);
+        circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
 
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
@@ -349,7 +308,7 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
         }
       }
     });
-}).catch(function (error) {
+}).catch(function(error) {
   console.log(error);
 });
 
