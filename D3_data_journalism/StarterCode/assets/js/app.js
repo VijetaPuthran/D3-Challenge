@@ -54,15 +54,21 @@ function renderAxes(newXScale, xAxis) {
 
 // function used for updating circles group with a transition to
 // new circles
-function renderCircles(circlesGroup, newXScale, chosenXAxis,circlesText) {
+function renderCircles(circlesGroup, newXScale, chosenXAxis,circlesText, Data) {
 
   circlesGroup.transition()
     .duration(1000)
     .attr("cx", d => newXScale(d[chosenXAxis]));
 
-  circlesText.transition()
+    svg.selectAll(".stateText")
+    .data(Data)
+    .transition()
     .duration(1000)
-    .attr("dx", d => newXScale(d[chosenXAxis]));
+    .attr("x", d => newXScale(d[chosenXAxis]));
+
+  //circlesText.transition()
+    //.duration(1000)
+    //.attr("x", d => newXScale(d[chosenXAxis]));
 
   return circlesGroup;
 }
@@ -172,6 +178,7 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
       .insert("text")
       .text(Data[index].abbr)
       .attr('class','stateText')
+      .attr("stroke", "black")
       .attr("x", xLinearScale(Data[index][chosenXAxis]))
       .attr("y", yLinearScale(Data[index].healthcareLow))
     }
@@ -186,7 +193,7 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
   // .attr("x", d => xLinearScale(d[chosenXAxis]))
   // .attr("y", d => yLinearScale(d.healthcareLow))
 
-   var circlesText = chartGroup.selectAll("text")
+   var circlesText = svg.selectAll(".stateText");
   // .data(Data)
   // .enter()
   // .append("text")
@@ -308,8 +315,11 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
   // x axis labels event listener
   labelsGroup.selectAll("text")
     .on("click", function () {
+
+      
       // get value of selection
       var value = d3.select(this).attr("value");
+      
       if (value !== chosenXAxis) {
 
         // replaces chosenXAxis with value
@@ -325,7 +335,7 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
         xAxis = renderAxes(xLinearScale, xAxis);
 
         // updates circles with new x values
-        circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis, circlesText);
+        circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis, circlesText, Data);
 
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
