@@ -66,10 +66,6 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis,circlesText, Data) {
     .duration(1000)
     .attr("x", d => newXScale(d[chosenXAxis]));
 
-  //circlesText.transition()
-    //.duration(1000)
-    //.attr("x", d => newXScale(d[chosenXAxis]));
-
   return circlesGroup;
 }
 
@@ -145,20 +141,9 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
     .attr("transform", `translate(0, ${height})`)
     .call(bottomAxis);
 
-  // svg.append("g")
-  // .classed("x-axis", true)
-  // .attr("transform", `translate(0, ${height})`)
-  // .call(bottomAxis);
-
   // append y axis
   chartGroup.append("g")
     .call(leftAxis);
-
-  // var circlesGroup = chartGroup.selectAll("g")
-  //   .data(Data)
-  //   .enter()
-  //   .append("g");
-  //append initial circles
     
   var circlesGroup = chartGroup.selectAll("circle")
     .data(Data)
@@ -171,115 +156,17 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
     .attr("opacity", ".5");
     //console.log(Data);
 
-    //svg.select(".main").style("color", "green");
-
     for(var index=0;index<Data.length;index++) {
       svg.select(".main")
       .insert("text")
       .text(Data[index].abbr)
       .attr('class','stateText')
-      .attr("stroke", "black")
+      //.attr("stroke", "black")
       .attr("x", xLinearScale(Data[index][chosenXAxis]))
       .attr("y", yLinearScale(Data[index].healthcareLow))
     }
 
-
-  //var circlesText = chartGroup.selectAll("text")
-  // .data(Data)
-  // .enter()
-  // .append("text")
-  // .text(Data[0].abbr)
-  // .attr('class','stateText')
-  // .attr("x", d => xLinearScale(d[chosenXAxis]))
-  // .attr("y", d => yLinearScale(d.healthcareLow))
-
    var circlesText = svg.selectAll(".stateText");
-  // .data(Data)
-  // .enter()
-  // .append("text")
-  // //.text(d=>d.abbr)
-  // //console.log(Data)
-  // .text(function(d) {
-  //     return d.abbr;      
-  //   })
-  // .attr('class','stateText')
-  // .attr("x", d => xLinearScale(d[chosenXAxis]))
-  // .attr("y", d => yLinearScale(d.healthcareLow))
-
-  
-
-  // circlesGroup.append("circle")
-  //   .attr("cx", d => xLinearScale(d[chosenXAxis]))
-  //   .attr("cy", d => yLinearScale(d.healthcareLow))
-  //   .attr("r", 20)
-  //   .attr("fill", "lightblue")
-  //   .attr("opacity", ".5");
-
-  // svg.selectAll("circle")
-  //   .data(Data)
-  //   .enter()
-  //   .append("circle")
-  //   .attr("cx", d => xLinearScale(d[chosenXAxis]))
-  //   .attr("cy", d => yLinearScale(d.healthcareLow))
-  //   .attr("r", 20)
-  //   .attr("fill", "lightblue")
-  //   .attr("opacity", ".5");
-
-  // circlesGroup.
-  //     .data(Data)
-  //     .enter()
-  //     .append("text")
-  // .text(function(d) {
-  //   return d.abbr;
-  // })
-
-
-  //adding text in circles
-  // svg.selectAll(".dot")
-  // .data(Data)
-  // .enter()
-  // .append("text")  
-  // .text(function(d){return d.abbr;})
-  // .attr("x", function(d){
-  //     return xLinearScale(d[chosenXAxis]);
-  // })
-  // .attr("y", function(d) {
-  //     return yLinearScale(d.healthcareLow);
-  // })
-  // .attr("font-size","8px")
-  // .attr("fill","black")
-  // .style("text-anchor","middle");
-
-  // circlesGroup
-  // .append("text")  
-  // .text(function(d){return d.abbr;})
-  // .attr("x", function(d){
-  //     return xLinearScale(d[chosenXAxis]);
-  // })
-  // .attr("y", function(d) {
-  //     return yLinearScale(d.healthcareLow);
-  // })
-  // .attr("font-size","8px")
-  // .attr("fill","black")
-  // .style("text-anchor","middle");
-
-  // svg.selectAll("g")
-  // .data(Data)
-  // .enter()
-  // .append("text")
-  // 	 .attr("x", function(d){
-  //     return xLinearScale(d[chosenXAxis]);
-  // })
-  // .attr("y", function(d) {
-  //     return yLinearScale(d.healthcareLow);
-  // })
-  // 	 .attr("stroke", "black")
-  // 	 .attr("font-size", "8px")
-  // 	 .text(function(d) {
-  // 			return d.abbr;
-  // 	 });
-
-
 
   // Create group for two x-axis labels
   var labelsGroup = chartGroup.append("g")
@@ -316,7 +203,6 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
   labelsGroup.selectAll("text")
     .on("click", function () {
 
-      
       // get value of selection
       var value = d3.select(this).attr("value");
       
