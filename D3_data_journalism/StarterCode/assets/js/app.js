@@ -93,7 +93,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
   circlesGroup.on("mouseover", function (data) {
     toolTip.show(data, this);
   })
-    // onmouseout event
+    // on mouse out event
     .on("mouseout", function (data, index) {
       toolTip.hide(data);
     });
@@ -152,7 +152,7 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d.healthcareLow))
     .attr("r", 20)
-    .attr("fill", "blue")
+    .attr("class","stateCircle")
     .attr("opacity", ".5");
     //console.log(Data);
 
@@ -161,7 +161,6 @@ d3.csv("./assets/data/data.csv").then(function (Data, err) {
       .insert("text")
       .text(Data[index].abbr)
       .attr('class','stateText')
-      //.attr("stroke", "black")
       .attr("x", xLinearScale(Data[index][chosenXAxis]))
       .attr("y", yLinearScale(Data[index].healthcareLow))
     }
