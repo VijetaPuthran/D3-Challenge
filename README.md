@@ -13,7 +13,9 @@ The data set included with the assignment is based on 2014 ACS 1-year estimates 
 
 ### D3 Times: 
 
-A scatter plot is created between two of the data variables that is, `Healthcare vs. Poverty`. The Age(median) demographics is included in the chart and the and the click events is created so that the users can decide which data to display.
+![D3 Chart](/Images/D3Times.png)
+
+A scatter plot is created between two of the data variables that is, `Healthcare vs. Poverty`. The `Healthcare vs. Age(median)` demographics is included in the chart and the and the click events is created so that the users can decide which data to display.
 
 Using the D3 techniques, a scatter plot is created that represents each state with circle elements. This graphic is created in the `app.js` file. The data is pulled in from `data.csv` by using the `d3.csv` function.
 
